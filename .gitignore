@@ -57,8 +57,6 @@ composer.phar
 *.log
 *.cache
 *.tmp
-*.env
-.env.*
 .env.local
 .phpunit.result.cache
 phpunit.xml
