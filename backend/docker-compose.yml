@@ -10,7 +10,7 @@ services:
       - db
 
   db:
-    image: mysql:8.4
+    image: mysql:8.0
     container_name: symfony_db
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -43,3 +43,6 @@ services:
       - "18888:80"
     depends_on:
       - php
+
+volumes:
+  db_data:
