@@ -17,3 +17,6 @@ migrate:
 
 logs:
 	docker-compose logs -f
+
+composer-require:
+	docker exec -it symfony_php composer require $(REQUIRE)

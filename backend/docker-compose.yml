@@ -43,6 +43,3 @@ services:
       - "18888:80"
     depends_on:
       - php
-
-volumes:
-  db_data:
