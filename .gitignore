@@ -1,0 +1,171 @@
+# ====================================
+# OS-SPECIFIC FILES
+# ====================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# ====================================
+# IDEs and TEXT EDITORS
+# ====================================
+# VSCode
+.vscode/
+.code-workspace
+
+# JetBrains (PhpStorm, WebStorm, etc.)
+.idea/
+*.iml
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+
+# ====================================
+# NODE / JAVASCRIPT / TYPESCRIPT
+# ====================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# Next.js / Nuxt / Vite / etc
+.next/
+.nuxt/
+dist/
+build/
+out/
+coverage/
+.cache/
+.parcel-cache/
+
+# ====================================
+# PHP
+# ====================================
+vendor/
+composer.lock
+composer.phar
+*.log
+*.cache
+*.tmp
+*.env
+.env.*
+.env.local
+.phpunit.result.cache
+phpunit.xml
+phpunit.xml.dist
+
+# Laravel
+storage/
+bootstrap/cache/
+.env.testing
+
+# Symfony
+var/
+config/secrets/dev/dev.encrypt.public.php
+config/secrets/prod/prod.encrypt.public.php
+
+# ====================================
+# DOCKER
+# ====================================
+*.container
+*.log
+*.pid
+docker-compose.override.yml
+docker-compose.dev.yml
+
+# ====================================
+# TEST / COVERAGE
+# ====================================
+coverage/
+*.lcov
+.nyc_output/
+test-results/
+
+# ====================================
+# LOGS / TEMP
+# ====================================
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.sw?
+*.pid
+
+# ====================================
+# COMPILED / GENERATED FILES
+# ====================================
+*.class
+*.dll
+*.exe
+*.so
+*.o
+*.a
+*.out
+*.map
+
+# ====================================
+# MONOREPO TOOLS
+# ====================================
+lerna-debug.log
+turbo/
+.turbo/
+
+# ====================================
+# MAC OS / WINDOWS GARBAGE
+# ====================================
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# ====================================
+# MISC
+# ====================================
+*.bak
+*.orig
+*.tmp
+*.temp
+*.sw?
+*.swo
+*.swn
+*.pid
+*.seed
+*.pid.lock
+
+# ====================================
+# GIT
+# ====================================
+*.patch
+*.diff
+*.rej
+*.orig
+*.goutputstream-*
+*.crdownload
+
+# ====================================
+# IMAGES (RAW)
+# ====================================
+*.psd
+*.xcf
+*.ai
+*.sketch
+
+# ====================================
+# LOCAL CONFIGS
+# ====================================
+local.settings.json
+firebase-debug.log
+firebase-debug.*
