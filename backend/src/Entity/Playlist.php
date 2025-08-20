@@ -35,13 +35,13 @@ class Playlist
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    // Связь с сущностью Song
-    #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'playlists')]
-    private Collection $songs;
+    // Связь с сущностью Track
+    #[ORM\ManyToMany(targetEntity: Track::class, inversedBy: 'playlists')]
+    private Collection $tracks;
 
     public function __construct()
     {
-        $this->songs = new ArrayCollection();
+        $this->tracks = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -102,24 +102,24 @@ class Playlist
     }
 
     /**
-     * @return Collection|Song[]
+     * @return Collection|Track[]
      */
-    public function getSongs(): Song
+    public function getSongs(): Track
     {
-        return $this->songs;
+        return $this->tracks;
     }
 
-    public function addSong(Song $song): self
+    public function addSong(Track $track): self
     {
-        if (!$this->songs->contains($song)) {
-            $this->songs[] = $song;
+        if (!$this->tracks->contains($track)) {
+            $this->tracks[] = $track;
         }
         return $this;
     }
 
-    public function removeSong(Song $song): self
+    public function removeSong(Track $track): self
     {
-        $this->songs->removeElement($song);
+        $this->tracks->removeElement($track);
         return $this;
     }
 }

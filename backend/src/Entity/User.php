@@ -24,6 +24,9 @@ class User
     #[ORM\Column(type: 'string', length: 50, unique: true)]
     private string $username;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private string $fullName;
+
     // Дата и время создания пользователя
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
@@ -77,6 +80,17 @@ class User
     public function setUsername(string $username): self
     {
         $this->username = $username;
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
         return $this;
     }
 

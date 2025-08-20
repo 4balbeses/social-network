@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: "App\Repository\SongRepository")]
-class Song
+#[ORM\Entity(repositoryClass: "App\Repository\TrackRepository")]
+class Track
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,19 +20,28 @@ class Song
     #[ORM\Column(type: 'string', length: 255)]
     private string $artist;
 
+    /*Описание трека*/
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
+
     /*Продолжительность песни*/
     #[ORM\Column(type: 'integer')]
     private int $duration; // в секундах
 
-    /*Дата добавлении песни*/
+    /*Дата добавления песни*/
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $filePath = null;
 
+    // Связь с сущностью Genre
+    #[ORM\ManyToOne(targetEntity: Genre::class, inversedBy: 'tracks')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Genre $genre = null;
+
     // Связь с сущностью Playlist
-    #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
+    #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'tracks')]
     private Collection $playlists;
 
     public function __construct()
@@ -68,6 +77,17 @@ class Song
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
     public function getDuration(): int
     {
         return $this->duration;
@@ -92,6 +112,17 @@ class Song
     public function setFilePath(?string $filePath): self
     {
         $this->filePath = $filePath;
+        return $this;
+    }
+
+    public function getGenre(): ?Genre
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?Genre $genre): self
+    {
+        $this->genre = $genre;
         return $this;
     }
 
@@ -129,16 +160,14 @@ class Song
      * */
     public function getFormattedDuration(): string
     {
-        // Делит общее кол-во времени на 60 - получаем минуты
-        // floor() - округляет вниз до целого числа
-        $minutes = floor($this->duration / 60);
 
-        // Дальше делим на 60 - получим оставшиеся секунды
+        $hours = floor($this->duration / 3600);
+        $minutes = floor(($this->duration % 3600) / 60);
         $seconds = $this->duration % 60;
 
-        // Форматируем строку:
-        // %d - целое число (минуты)
-        // %02d - целое число (секунды), добавив 0 для 2 цифр
+        if ($hours > 0) {
+            return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
+        }
         return sprintf('%d:%02d', $minutes, $seconds);
     }
 }
