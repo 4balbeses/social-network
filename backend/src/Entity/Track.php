@@ -17,9 +17,6 @@ class Track
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $artist;
-
     /*Описание трека*/
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
@@ -44,6 +41,10 @@ class Track
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'tracks')]
     private Collection $playlists;
 
+    #[ORM\ManyToOne(targetEntity: Artist::class, inversedBy: 'tracks')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Artist $artist = null;
+
     public function __construct()
     {
         $this->playlists = new ArrayCollection();
@@ -66,12 +67,12 @@ class Track
         return $this;
     }
 
-    public function getArtist(): string
+    public function getArtist(): ?Artist
     {
         return $this->artist;
     }
 
-    public function setArtist(string $artist): self
+    public function setArtist(?Artist $artist): self
     {
         $this->artist = $artist;
         return $this;
