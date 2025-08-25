@@ -19,19 +19,8 @@ final class AttachRefreshTokenOnLoginListener
             return;
         }
 
-        // создаём refresh
         $rt = new RefreshToken();
         $rt->setUser($user);
         $rt->setToken(bin2hex(random_bytes(64)));
         $rt->setCreatedAt(new DateTimeImmutable());
-        $rt->setExpiresAt((new DateTimeImmutable())->modify("+30 days"));
-
-        $this->em->persist($rt);
-        $this->em->flush();
-
-        // добавляем в ответ логина
-        $data = $event->getData();
-        $data["refresh_token"] = $rt->getToken();
-        $event->setData($data);
-    }
-}
+        $rt->setExpiresAt((new DateTimeImmutable())->modify(+30
