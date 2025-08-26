@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: "App\Repository\TrackRepository")]
@@ -11,25 +12,25 @@ class Track
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(Types::STRING, length: 255)]
     private string $title;
 
     /*Описание трека*/
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     /*Продолжительность песни*/
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(Types::INTEGER)]
     private int $duration; // в секундах
 
     /*Дата добавления песни*/
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(Types::STRING, length: 255, nullable: true)]
     private ?string $filePath = null;
 
     // Связь с сущностью Genre
@@ -41,9 +42,15 @@ class Track
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'tracks')]
     private Collection $playlists;
 
+    // Связь с сущностью Artist
     #[ORM\ManyToOne(targetEntity: Artist::class, inversedBy: 'tracks')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Artist $artist = null;
+
+    // Связь с сущностью Album
+    #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'tracks')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Album $album = null;
 
     public function __construct()
     {
@@ -124,6 +131,17 @@ class Track
     public function setGenre(?Genre $genre): self
     {
         $this->genre = $genre;
+        return $this;
+    }
+
+    public function getAlbum(): ?Album
+    {
+        return $this->album;
+    }
+
+    public function setAlbum(?Album $album): self
+    {
+        $this->album = $album;
         return $this;
     }
 

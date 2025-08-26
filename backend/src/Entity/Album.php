@@ -7,46 +7,39 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: "App\Repository\PlaylistRepository")]
-#[ORM\Table(name: "playlist")]
-class Playlist
+
+#[ORM\Entity(repositoryClass: "App\Repository\AlbumRepository")]
+#[ORM\Table(name: 'album')]
+class Album
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(Types::INTEGER)]
+    #[ORM\Column(Types::BIGINT)]
     private ?int $id = null;
 
-    #[ORM\Column(Types::STRING, length: 100)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
 
-    #[ORM\Column(Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $createdAt;
 
-    /*
-     * Приватный или нет плейлист
-     * */
-    #[ORM\Column(type: 'boolean')]
-    private bool $isPublic = false;
-
-    // Связь многие-к-одному с сущностью User
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'playlists')]
-    #[ORM\JoinColumn(nullable: false)]
-    private User $user;
+    // Связь с сущностью Artist
+    #[ORM\ManyToOne(targetEntity: Artist::class, inversedBy: 'albums')]
+    #[ORM\JoinColumn(name: 'artist_id', referencedColumnName: 'id', nullable: false)]
+    private Artist $artist;
 
     // Связь с сущностью Track
-    #[ORM\ManyToMany(targetEntity: Track::class, inversedBy: 'playlists')]
+    #[ORM\OneToMany(targetEntity: Track::class, mappedBy: 'album')]
     private Collection $tracks;
 
     public function __construct()
     {
-        $this->tracks = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->tracks = new ArrayCollection();
     }
-
-    // Геттеры и сеттеры
 
     public function getId(): ?int
     {
@@ -80,47 +73,53 @@ class Playlist
         return $this->createdAt;
     }
 
-    public function isPublic(): bool
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        return $this->isPublic;
-    }
-
-    public function setIsPublic(bool $isPublic): self
-    {
-        $this->isPublic = $isPublic;
+        $this->createdAt = $createdAt;
         return $this;
     }
 
-    public function getUser(): User
+    public function getArtist(): Artist
     {
-        return $this->user;
+        return $this->artist;
     }
 
-    public function setUser(User $user): self
+    public function setArtist(Artist $artist): self
     {
-        $this->user = $user;
+        $this->artist = $artist;
         return $this;
     }
 
     /**
-     * @return Collection|Track[]
+     * @return Collection<int, Track>
      */
-    public function getSongs(): Track
+    public function getTracks(): Collection
     {
         return $this->tracks;
     }
 
-    public function addSong(Track $track): self
+    public function addTrack(Track $track): self
     {
         if (!$this->tracks->contains($track)) {
             $this->tracks[] = $track;
+            $track->setAlbum($this);
         }
         return $this;
     }
 
-    public function removeSong(Track $track): self
+    public function removeTrack(Track $track): self
     {
-        $this->tracks->removeElement($track);
+        if ($this->tracks->removeElement($track)) {
+            // set the owning side to null (unless already changed)
+            if ($track->getAlbum() === $this) {
+                $track->setAlbum(null);
+            }
+        }
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

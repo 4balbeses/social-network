@@ -4,31 +4,32 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: "App\Repository\UserRepository")]
-#[ORM\Table(name: "user")]
+#[ORM\Table(name: "users")]
 class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(Types::STRING, length: 180, unique: true)]
     private string $email;
 
-    #[ORM\Column(type: 'string', length: 100, unique: true)]
+    #[ORM\Column(Types::STRING, length: 100, unique: true)]
     private string $password;
 
-    #[ORM\Column(type: 'string', length: 50, unique: true)]
+    #[ORM\Column(Types::STRING, length: 50, unique: true)]
     private string $username;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(Types::STRING, length: 100)]
     private string $fullName;
 
     // Дата и время создания пользователя
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $createdAt;
 
     // Связь с сущностью Playlist

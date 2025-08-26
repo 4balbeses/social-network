@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -13,14 +14,14 @@ class Artist
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(Types::STRING, length: 255)]
     private string $fullName;
 
     /*Описание артиста*/
-    #[ORM\Column(type: "text", nullable: true)]
+    #[ORM\Column(Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     /* Обратная связь OneToMany с сущностью Track */
