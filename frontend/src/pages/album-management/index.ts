@@ -1,0 +1,1 @@
+export { AlbumManagementPage } from './AlbumManagementPage'

@@ -1,0 +1,139 @@
+import { useState, useEffect } from 'react'
+import { useUnit } from 'effector-react'
+import { createTrack } from '../../entities/track'
+import { fetchGenres, $genres } from '../../entities/genre'
+import { fetchMedia, $mediaFiles } from '../../entities/media'
+import { Button } from '../../shared/ui/Button'
+
+interface CreateTrackFormProps {
+  onSuccess?: () => void
+  onCancel?: () => void
+}
+
+export function CreateTrackForm({ onSuccess, onCancel }: CreateTrackFormProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    trackFileId: '',
+    genreId: ''
+  })
+
+  const [genres, mediaFiles] = useUnit([$genres, $mediaFiles])
+  const handleCreateTrack = useUnit(createTrack)
+  const handleFetchGenres = useUnit(fetchGenres)
+  const handleFetchMedia = useUnit(fetchMedia)
+
+  useEffect(() => {
+    handleFetchGenres()
+    handleFetchMedia()
+  }, [handleFetchGenres, handleFetchMedia])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.name || !formData.trackFileId || !formData.genreId) return
+
+    try {
+      await handleCreateTrack({
+        name: formData.name,
+        description: formData.description || undefined,
+        trackFileId: Number(formData.trackFileId),
+        genreId: Number(formData.genreId)
+      })
+      onSuccess?.()
+    } catch (error) {
+      console.error('Failed to create track:', error)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Track Name *
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          rows={3}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="trackFileId" className="block text-sm font-medium text-gray-700">
+          Track File *
+        </label>
+        <select
+          id="trackFileId"
+          name="trackFileId"
+          value={formData.trackFileId}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        >
+          <option value="">Select a file</option>
+          {mediaFiles.map(file => (
+            <option key={file.id} value={file.id}>
+              {file.originalName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="genreId" className="block text-sm font-medium text-gray-700">
+          Genre *
+        </label>
+        <select
+          id="genreId"
+          name="genreId"
+          value={formData.genreId}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        >
+          <option value="">Select a genre</option>
+          {genres.map(genre => (
+            <option key={genre.id} value={genre.id}>
+              {genre.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex justify-end space-x-3">
+        {onCancel && (
+          <Button type="button" variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
+        )}
+        <Button type="submit">
+          Create Track
+        </Button>
+      </div>
+    </form>
+  )
+}

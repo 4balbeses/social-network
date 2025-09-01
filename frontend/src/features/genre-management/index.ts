@@ -1,0 +1,1 @@
+export { GenreManagement } from './GenreManagement'

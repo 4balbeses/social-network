@@ -1,0 +1,1 @@
+export { ArtistManagement } from './ArtistManagement'
