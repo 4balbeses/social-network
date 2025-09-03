@@ -38,7 +38,7 @@ export const Modal = ({
       />
       <div 
         className={cn(
-          'relative bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto',
+          'relative bg-card text-card-foreground rounded-lg shadow-lg max-h-[90vh] overflow-y-auto',
           {
             'max-w-sm': size === 'sm',
             'max-w-md': size === 'md',
@@ -48,11 +48,11 @@ export const Modal = ({
         )}
       >
         {title && (
-          <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-lg font-semibold">{title}</h2>
+          <div className="flex items-center justify-between p-4 border-b border-border">
+            <h2 className="text-lg font-semibold text-card-foreground">{title}</h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-muted-foreground hover:text-card-foreground transition-colors"
             >
               ×
             </button>

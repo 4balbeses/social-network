@@ -7,48 +7,43 @@ export function Header() {
   const [user, isAuthenticated] = useUnit([$user, $isAuthenticated])
 
   return (
-    <header className="bg-white border-b border-gray-200">
+    <header className="bg-card border-b border-border nav-gradient">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-gray-900">
-              SocialMusic
+            <Link to="/" className="text-xl font-bold text-card-foreground">
+              🎵 Social Network
             </Link>
           </div>
           
           <nav className="flex space-x-6">
-            <Link to="/" className="text-gray-700 hover:text-gray-900">
+            <Link to="/" className="text-muted-foreground hover:text-card-foreground transition-colors">
               Home
             </Link>
-            <Link to="/tracks" className="text-gray-700 hover:text-gray-900">
-              Browse
+            <Link to="/feed" className="text-muted-foreground hover:text-card-foreground transition-colors">
+              Feed
             </Link>
-            
-            {/* Management Dropdown - simplified as individual links for now */}
-            <div className="flex space-x-4">
-              <span className="text-gray-500 font-medium">Manage:</span>
-              <Link to="/manage/tracks" className="text-sm text-blue-600 hover:text-blue-800">
-                Tracks
-              </Link>
-              <Link to="/manage/albums" className="text-sm text-blue-600 hover:text-blue-800">
-                Albums
-              </Link>
-              <Link to="/manage/artists" className="text-sm text-blue-600 hover:text-blue-800">
-                Artists
-              </Link>
-              <Link to="/manage/playlists" className="text-sm text-blue-600 hover:text-blue-800">
-                Playlists
-              </Link>
-              <Link to="/manage/genres" className="text-sm text-blue-600 hover:text-blue-800">
-                Genres
-              </Link>
-            </div>
+            <Link to="/artists" className="text-muted-foreground hover:text-card-foreground transition-colors">
+              Artists
+            </Link>
+            <Link to="/albums" className="text-muted-foreground hover:text-card-foreground transition-colors">
+              Albums
+            </Link>
+            <Link to="/tracks" className="text-muted-foreground hover:text-card-foreground transition-colors">
+              Tracks
+            </Link>
+            <Link to="/playlists" className="text-muted-foreground hover:text-card-foreground transition-colors">
+              Playlists
+            </Link>
+            <Link to="/users" className="text-muted-foreground hover:text-card-foreground transition-colors">
+              Users
+            </Link>
           </nav>
           
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-muted-foreground">
                   Welcome, {user?.username}
                 </span>
                 <Link to="/profile">

@@ -65,11 +65,11 @@ export const UsersPage = () => {
         </Button>
       </div>
 
-      {loading && users.length === 0 ? (
+      {loading && (!Array.isArray(users) || users.length === 0) ? (
         <div>Loading users...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {users.map((user: User) => (
+          {Array.isArray(users) && users.map((user: User) => (
             <UserCard
               key={user.id}
               user={user}
@@ -80,8 +80,8 @@ export const UsersPage = () => {
         </div>
       )}
 
-      {users.length === 0 && !loading && (
-        <div className="text-center text-gray-500 py-8">
+      {Array.isArray(users) && users.length === 0 && !loading && (
+        <div className="text-center text-muted-foreground py-8">
           No users found. Create your first user!
         </div>
       )}

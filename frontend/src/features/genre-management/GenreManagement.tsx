@@ -52,28 +52,28 @@ export function GenreManagement() {
 
   if (showForm) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+      <div className="bg-card rounded-lg shadow-md p-6">
+        <h2 className="text-xl font-semibold text-card-foreground mb-4">
           {editingGenre ? 'Edit Genre' : 'Create New Genre'}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Genre Name *</label>
+            <label className="block text-sm font-medium text-muted-foreground">Genre Name *</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-muted-foreground">Description</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div className="flex justify-end space-x-3">
@@ -92,7 +92,7 @@ export function GenreManagement() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Genre Management</h2>
+        <h2 className="text-xl font-semibold text-card-foreground">Genre Management</h2>
         <Button onClick={() => setShowForm(true)}>Add New Genre</Button>
       </div>
 
@@ -101,22 +101,22 @@ export function GenreManagement() {
       ) : genres.length === 0 ? (
         <div className="text-center py-8">No genres found</div>
       ) : (
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-card shadow-md rounded-lg overflow-hidden">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Description</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-border">
               {genres.map((genre) => (
-                <tr key={genre.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                <tr key={genre.id} className="hover:bg-accent transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap font-medium text-card-foreground">
                     {genre.name}
                   </td>
-                  <td className="px-6 py-4 text-gray-500 max-w-xs truncate">
+                  <td className="px-6 py-4 text-muted-foreground max-w-xs truncate">
                     {genre.description}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap space-x-2">

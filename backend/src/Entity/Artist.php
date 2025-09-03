@@ -24,6 +24,9 @@ class Artist
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(targetEntity: Media::class)]
+    #[ORM\JoinColumn(name: 'profile_image_id', referencedColumnName: 'id', nullable: true)]
+    private ?Media $profileImage = null;
 
     #[ORM\OneToMany(targetEntity: ArtistAlbum::class, mappedBy: 'artist', orphanRemoval: true)]
     private Collection $artistAlbums;
@@ -62,6 +65,17 @@ class Artist
         return $this;
     }
 
+    public function getProfileImage(): ?Media
+    {
+        return $this->profileImage;
+    }
+
+    public function setProfileImage(?Media $profileImage): static
+    {
+        $this->profileImage = $profileImage;
+
+        return $this;
+    }
 
     public function getArtistAlbums(): Collection
     {

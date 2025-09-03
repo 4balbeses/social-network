@@ -1,5 +1,5 @@
 import { createStore, createEvent, createEffect, sample } from 'effector';
-import { apiClient } from '@/shared/api/base';
+import { apiClient, type ApiResponse } from '@/shared/api/base';
 
 export interface CrudState<T> {
   items: T[];
@@ -28,15 +28,41 @@ export function createCrudStore<T extends { id: number }>(
   const clearError = createEvent<void>();
 
   const fetchItemsFx = createEffect<void, T[]>(async () => {
-    return await apiClient.get<T[]>(endpoint);
+    const response = await apiClient.get<any>(endpoint);
+    // Handle JSON-LD Collection format
+    if (response.member && Array.isArray(response.member)) {
+      return response.member;
+    }
+    // Handle ApiResponse format
+    if (response.data && Array.isArray(response.data)) {
+      return response.data;
+    }
+    // Handle direct array
+    if (Array.isArray(response)) {
+      return response;
+    }
+    // Fallback to empty array
+    return [];
   });
 
   const createItemFx = createEffect<Omit<T, 'id'>, T>(async (data) => {
-    return await apiClient.post<T>(endpoint, data);
+    const response = await apiClient.post<any>(endpoint, data);
+    // Handle ApiResponse format
+    if (response.data) {
+      return response.data;
+    }
+    // Handle direct object
+    return response;
   });
 
   const updateItemFx = createEffect<T, T>(async (item) => {
-    return await apiClient.put<T>(`${endpoint}/${item.id}`, item);
+    const response = await apiClient.put<any>(`${endpoint}/${item.id}`, item);
+    // Handle ApiResponse format
+    if (response.data) {
+      return response.data;
+    }
+    // Handle direct object
+    return response;
   });
 
   const deleteItemFx = createEffect<number, void>(async (id) => {

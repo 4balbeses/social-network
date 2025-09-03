@@ -3,8 +3,9 @@
 namespace App\Service;
 
 use App\Entity\Artist;
-use App\DTO\Request\ArtistCreateRequest;
-use App\DTO\Request\ArtistUpdateRequest;
+use App\Entity\Media;
+use App\Dto\Artist\Request\ArtistCreateRequest;
+use App\Dto\Artist\Request\ArtistUpdateRequest;
 use App\Repository\ArtistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -57,5 +58,21 @@ class ArtistService
     public function getArtistById(int $id): ?Artist
     {
         return $this->artistRepository->find($id);
+    }
+
+    public function setArtistProfileImage(Artist $artist, Media $media): Artist
+    {
+        $artist->setProfileImage($media);
+        $this->entityManager->flush();
+        
+        return $artist;
+    }
+
+    public function removeArtistProfileImage(Artist $artist): Artist
+    {
+        $artist->setProfileImage(null);
+        $this->entityManager->flush();
+        
+        return $artist;
     }
 }

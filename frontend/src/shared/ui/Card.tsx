@@ -38,7 +38,7 @@ export const CardTitle = ({ children, className }: CardHeaderProps) => {
 
 export const CardDescription = ({ children, className }: CardHeaderProps) => {
   return (
-    <p className={cn('text-sm text-gray-500', className)}>
+    <p className={cn('text-sm text-muted-foreground', className)}>
       {children}
     </p>
   );

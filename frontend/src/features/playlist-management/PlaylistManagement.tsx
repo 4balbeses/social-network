@@ -56,28 +56,28 @@ export function PlaylistManagement() {
 
   if (showForm) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+      <div className="bg-card rounded-lg shadow-md p-6">
+        <h2 className="text-xl font-semibold text-card-foreground mb-4">
           {editingPlaylist ? 'Edit Playlist' : 'Create New Playlist'}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Playlist Name *</label>
+            <label className="block text-sm font-medium text-muted-foreground">Playlist Name *</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-muted-foreground">Description</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div>
@@ -107,7 +107,7 @@ export function PlaylistManagement() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Playlist Management</h2>
+        <h2 className="text-xl font-semibold text-card-foreground">Playlist Management</h2>
         <Button onClick={() => setShowForm(true)}>Add New Playlist</Button>
       </div>
 
@@ -116,34 +116,34 @@ export function PlaylistManagement() {
       ) : playlists.length === 0 ? (
         <div className="text-center py-8">No playlists found</div>
       ) : (
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-card shadow-md rounded-lg overflow-hidden">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Owner</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Visibility</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Owner</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Visibility</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Created</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-border">
               {playlists.map((playlist) => (
-                <tr key={playlist.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                <tr key={playlist.id} className="hover:bg-accent transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap font-medium text-card-foreground">
                     {playlist.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-muted-foreground">
                     {playlist.owner.username}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      playlist.isPublic ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                      playlist.isPublic ? 'bg-green-100 text-green-800' : 'bg-muted text-muted-foreground'
                     }`}>
                       {playlist.isPublic ? 'Public' : 'Private'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-muted-foreground">
                     {new Date(playlist.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap space-x-2">

@@ -69,13 +69,13 @@ export function EditTrackForm({ trackId, onSuccess, onCancel }: EditTrackFormPro
   }
 
   if (!currentTrack) {
-    return <div className="text-gray-500">Loading...</div>
+    return <div className="text-muted-foreground">Loading...</div>
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="name" className="block text-sm font-medium text-muted-foreground">
           Track Name *
         </label>
         <input
@@ -85,12 +85,12 @@ export function EditTrackForm({ trackId, onSuccess, onCancel }: EditTrackFormPro
           value={formData.name}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="description" className="block text-sm font-medium text-muted-foreground">
           Description
         </label>
         <textarea
@@ -99,12 +99,12 @@ export function EditTrackForm({ trackId, onSuccess, onCancel }: EditTrackFormPro
           value={formData.description}
           onChange={handleChange}
           rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
 
       <div>
-        <label htmlFor="trackFileId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="trackFileId" className="block text-sm font-medium text-muted-foreground">
           Track File *
         </label>
         <select
@@ -113,7 +113,7 @@ export function EditTrackForm({ trackId, onSuccess, onCancel }: EditTrackFormPro
           value={formData.trackFileId}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           <option value="">Select a file</option>
           {mediaFiles.map(file => (
@@ -125,7 +125,7 @@ export function EditTrackForm({ trackId, onSuccess, onCancel }: EditTrackFormPro
       </div>
 
       <div>
-        <label htmlFor="genreId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="genreId" className="block text-sm font-medium text-muted-foreground">
           Genre *
         </label>
         <select
@@ -134,7 +134,7 @@ export function EditTrackForm({ trackId, onSuccess, onCancel }: EditTrackFormPro
           value={formData.genreId}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           <option value="">Select a genre</option>
           {genres.map(genre => (

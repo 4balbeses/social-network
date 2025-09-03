@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\ArtistService;
+use App\Service\MediaService;
 use App\Service\MapperService;
 use App\Dto\Artist\Request\ArtistCreateRequest;
 use App\Dto\Artist\Request\ArtistUpdateRequest;
@@ -18,6 +19,7 @@ class ArtistController extends AbstractController
 {
     public function __construct(
         private ArtistService $artistService,
+        private MediaService $mediaService,
         private MapperService $mapperService,
         private ValidatorInterface $validator
     ) {
@@ -110,6 +112,57 @@ class ArtistController extends AbstractController
         try {
             $this->artistService->deleteArtist($artist);
             return $this->json(null, Response::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/{id}/profile-image', methods: ['POST'])]
+    public function setProfileImage(int $id, Request $request): JsonResponse
+    {
+        $artist = $this->artistService->getArtistById($id);
+        
+        if (!$artist) {
+            return $this->json(['error' => 'Artist not found'], Response::HTTP_NOT_FOUND);
+        }
+        
+        $data = json_decode($request->getContent(), true);
+        $mediaId = $data['mediaId'] ?? null;
+        
+        if (!$mediaId) {
+            return $this->json(['error' => 'Media ID is required'], Response::HTTP_BAD_REQUEST);
+        }
+        
+        $media = $this->mediaService->getMediaById($mediaId);
+        
+        if (!$media) {
+            return $this->json(['error' => 'Media not found'], Response::HTTP_NOT_FOUND);
+        }
+        
+        if (!$this->mediaService->isImageFile($media->getMimeType())) {
+            return $this->json(['error' => 'Media must be an image file'], Response::HTTP_BAD_REQUEST);
+        }
+        
+        try {
+            $updatedArtist = $this->artistService->setArtistProfileImage($artist, $media);
+            return $this->json($this->mapperService->artistToResponse($updatedArtist));
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/{id}/profile-image', methods: ['DELETE'])]
+    public function removeProfileImage(int $id): JsonResponse
+    {
+        $artist = $this->artistService->getArtistById($id);
+        
+        if (!$artist) {
+            return $this->json(['error' => 'Artist not found'], Response::HTTP_NOT_FOUND);
+        }
+        
+        try {
+            $updatedArtist = $this->artistService->removeArtistProfileImage($artist);
+            return $this->json($this->mapperService->artistToResponse($updatedArtist));
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }

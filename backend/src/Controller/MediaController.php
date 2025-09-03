@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\MediaService;
+use App\Service\FileUploadService;
 use App\Service\MapperService;
 use App\Dto\Media\Request\MediaCreateRequest;
 use App\Dto\Media\Request\MediaUpdateRequest;
@@ -18,6 +19,7 @@ class MediaController extends AbstractController
 {
     public function __construct(
         private MediaService $mediaService,
+        private FileUploadService $fileUploadService,
         private MapperService $mapperService,
         private ValidatorInterface $validator
     ) {
@@ -116,6 +118,33 @@ class MediaController extends AbstractController
         try {
             $this->mediaService->deleteMedia($media);
             return $this->json(null, Response::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/upload', methods: ['POST'])]
+    public function upload(Request $request): JsonResponse
+    {
+        $file = $request->files->get('file');
+        
+        if (!$file) {
+            return $this->json(['error' => 'No file provided'], Response::HTTP_BAD_REQUEST);
+        }
+        
+        $supportedMimeTypes = array_merge(
+            $this->mediaService->getSupportedImageMimeTypes(),
+            $this->mediaService->getSupportedAudioMimeTypes()
+        );
+        
+        $mimeType = $file->getMimeType();
+        if (!in_array($mimeType, $supportedMimeTypes)) {
+            return $this->json(['error' => 'Unsupported file type'], Response::HTTP_BAD_REQUEST);
+        }
+        
+        try {
+            $media = $this->fileUploadService->uploadFile($file);
+            return $this->json($this->mapperService->mediaToResponse($media), Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }

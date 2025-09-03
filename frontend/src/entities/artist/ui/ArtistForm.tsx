@@ -34,7 +34,7 @@ export const ArtistForm = ({ artist, onSubmit, onCancel, loading }: ArtistFormPr
         required
       />
       <div className="space-y-1">
-        <label className="text-sm font-medium text-gray-700">Description</label>
+        <label className="text-sm font-medium text-muted-foreground">Description</label>
         <textarea
           className="input min-h-[80px] resize-y"
           value={formData.description}

@@ -49,7 +49,7 @@ export function CreateAlbumForm({ onSuccess, onCancel }: CreateAlbumFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="name" className="block text-sm font-medium text-muted-foreground">
           Album Name *
         </label>
         <input
@@ -59,12 +59,12 @@ export function CreateAlbumForm({ onSuccess, onCancel }: CreateAlbumFormProps) {
           value={formData.name}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="description" className="block text-sm font-medium text-muted-foreground">
           Description
         </label>
         <textarea
@@ -73,12 +73,12 @@ export function CreateAlbumForm({ onSuccess, onCancel }: CreateAlbumFormProps) {
           value={formData.description}
           onChange={handleChange}
           rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
 
       <div>
-        <label htmlFor="artistId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="artistId" className="block text-sm font-medium text-muted-foreground">
           Artist *
         </label>
         <select
@@ -87,7 +87,7 @@ export function CreateAlbumForm({ onSuccess, onCancel }: CreateAlbumFormProps) {
           value={formData.artistId}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-input shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           <option value="">Select an artist</option>
           {artists.map(artist => (

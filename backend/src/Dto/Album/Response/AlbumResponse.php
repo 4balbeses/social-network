@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Response;
+namespace App\Dto\Album\Response;
 
 class AlbumResponse
 {

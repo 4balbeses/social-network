@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Request;
+namespace App\Dto\Playlist\Request;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -4,8 +4,8 @@ export const HomePage = () => {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome to Social Network</h1>
-        <p className="mt-2 text-gray-600">
+        <h1 className="text-3xl font-bold text-card-foreground">Welcome to Social Network</h1>
+        <p className="mt-2 text-muted-foreground">
           Manage your music collection, artists, albums, tracks, and playlists.
         </p>
       </div>
@@ -16,7 +16,7 @@ export const HomePage = () => {
             <CardTitle>Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Manage user accounts and profiles in your social network.
             </p>
           </CardContent>
@@ -27,7 +27,7 @@ export const HomePage = () => {
             <CardTitle>Artists</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Create and manage artist profiles with descriptions and discography.
             </p>
           </CardContent>
@@ -38,7 +38,7 @@ export const HomePage = () => {
             <CardTitle>Albums</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Organize music into albums linked to artists.
             </p>
           </CardContent>
@@ -49,7 +49,7 @@ export const HomePage = () => {
             <CardTitle>Tracks</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Upload and manage individual tracks with media files and genres.
             </p>
           </CardContent>
@@ -60,7 +60,7 @@ export const HomePage = () => {
             <CardTitle>Playlists</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Create curated playlists and share them with the community.
             </p>
           </CardContent>
@@ -71,7 +71,7 @@ export const HomePage = () => {
             <CardTitle>Genres</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Categorize music with genre tags and organize your collection.
             </p>
           </CardContent>

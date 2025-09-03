@@ -10,14 +10,14 @@ use App\Entity\Artist;
 use App\Entity\Genre;
 use App\Entity\Tag;
 use App\Entity\Media;
-use App\DTO\Response\UserResponse;
-use App\DTO\Response\TrackResponse;
-use App\DTO\Response\AlbumResponse;
-use App\DTO\Response\PlaylistResponse;
-use App\DTO\Response\ArtistResponse;
-use App\DTO\Response\GenreResponse;
-use App\DTO\Response\TagResponse;
-use App\DTO\Response\MediaResponse;
+use App\Dto\User\Response\UserResponse;
+use App\Dto\Track\Response\TrackResponse;
+use App\Dto\Album\Response\AlbumResponse;
+use App\Dto\Playlist\Response\PlaylistResponse;
+use App\Dto\Artist\Response\ArtistResponse;
+use App\Dto\Genre\Response\GenreResponse;
+use App\Dto\Tag\Response\TagResponse;
+use App\Dto\Media\Response\MediaResponse;
 
 class MapperService
 {
@@ -174,7 +174,21 @@ class MapperService
         $response->fullName = $artist->getFullName();
         $response->description = $artist->getDescription();
         
-        foreach ($artist->getAlbums() as $album) {
+        if ($artist->getProfileImage()) {
+            $media = $artist->getProfileImage();
+            $response->profileImage = [
+                'id' => $media->getId(),
+                'originalName' => $media->getOriginalName(),
+                'fileName' => $media->getFileName(),
+                'filePath' => $media->getFilePath(),
+                'mimeType' => $media->getMimeType(),
+                'fileSize' => $media->getFileSize(),
+                'uploadedAt' => $media->getUploadedAt()->format('Y-m-d H:i:s')
+            ];
+        }
+        
+        foreach ($artist->getArtistAlbums() as $artistAlbum) {
+            $album = $artistAlbum->getAlbum();
             $response->albums[] = [
                 'id' => $album->getId(),
                 'name' => $album->getName()

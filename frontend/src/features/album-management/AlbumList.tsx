@@ -30,7 +30,7 @@ export function AlbumList({ onEdit, onView }: AlbumListProps) {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <div className="text-gray-500">Loading albums...</div>
+        <div className="text-muted-foreground">Loading albums...</div>
       </div>
     )
   }
@@ -38,45 +38,45 @@ export function AlbumList({ onEdit, onView }: AlbumListProps) {
   if (albums.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No albums found</p>
+        <p className="text-muted-foreground">No albums found</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="bg-card shadow-md rounded-lg overflow-hidden">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-muted">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Name
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Artist
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Created
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-card divide-y divide-border">
           {albums.map((album) => (
-            <tr key={album.id} className="hover:bg-gray-50">
+            <tr key={album.id} className="hover:bg-accent transition-colors">
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">{album.name}</div>
+                <div className="text-sm font-medium text-card-foreground">{album.name}</div>
                 {album.description && (
-                  <div className="text-sm text-gray-500 truncate max-w-xs">
+                  <div className="text-sm text-muted-foreground truncate max-w-xs">
                     {album.description}
                   </div>
                 )}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{album.artist.fullName}</div>
+                <div className="text-sm text-card-foreground">{album.artist.fullName}</div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                 {new Date(album.createdAt).toLocaleDateString()}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

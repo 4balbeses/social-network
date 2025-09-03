@@ -101,6 +101,11 @@ class MediaService
         return str_starts_with($mimeType, 'audio/');
     }
 
+    public function isImageFile(string $mimeType): bool
+    {
+        return str_starts_with($mimeType, 'image/');
+    }
+
     public function getSupportedAudioMimeTypes(): array
     {
         return [
@@ -115,6 +120,19 @@ class MediaService
         ];
     }
 
+    public function getSupportedImageMimeTypes(): array
+    {
+        return [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+            'image/bmp',
+            'image/webp',
+            'image/svg+xml',
+        ];
+    }
+
     private function getMimeTypeByExtension(string $extension): string
     {
         $mimeTypes = [
@@ -125,6 +143,13 @@ class MediaService
             'flac' => 'audio/flac',
             'm4a' => 'audio/m4a',
             'webm' => 'audio/webm',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'bmp' => 'image/bmp',
+            'webp' => 'image/webp',
+            'svg' => 'image/svg+xml',
         ];
 
         return $mimeTypes[$extension] ?? 'application/octet-stream';

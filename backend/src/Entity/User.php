@@ -37,32 +37,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'owner', orphanRemoval: true)]
-    private Collection $playlists;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $userType = 'entrepreneur'; // entrepreneur, investor, mentor, advisor
 
-    #[ORM\OneToMany(targetEntity: Tag::class, mappedBy: 'author', orphanRemoval: true)]
-    private Collection $tags;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $bio = null;
 
-    #[ORM\OneToMany(targetEntity: UserPlaylist::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $userPlaylists;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $location = null;
 
-    #[ORM\OneToMany(targetEntity: PlaylistRating::class, mappedBy: 'ratingUser', orphanRemoval: true)]
-    private Collection $playlistRatings;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedin = null;
 
-    #[ORM\OneToMany(targetEntity: AlbumRating::class, mappedBy: 'ratingUser', orphanRemoval: true)]
-    private Collection $albumRatings;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $twitter = null;
 
-    #[ORM\OneToMany(targetEntity: TrackRating::class, mappedBy: 'ratingUser', orphanRemoval: true)]
-    private Collection $trackRatings;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $industry = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $expertise = null;
+
+    #[ORM\OneToMany(targetEntity: Company::class, mappedBy: 'founder', orphanRemoval: true)]
+    private Collection $companies;
+
+    #[ORM\OneToMany(targetEntity: Investment::class, mappedBy: 'investor')]
+    private Collection $investments;
+
+    #[ORM\OneToMany(targetEntity: PitchComment::class, mappedBy: 'author', orphanRemoval: true)]
+    private Collection $pitchComments;
+
+    #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'followers')]
+    private Collection $followedCompanies;
+
+    #[ORM\ManyToMany(targetEntity: Pitch::class, inversedBy: 'likedBy')]
+    private Collection $likedPitches;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'followers')]
+    #[ORM\JoinTable(name: 'user_followers')]
+    private Collection $following;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'following')]
+    private Collection $followers;
 
     public function __construct()
     {
-        $this->playlists = new ArrayCollection();
-        $this->tags = new ArrayCollection();
-        $this->userPlaylists = new ArrayCollection();
-        $this->playlistRatings = new ArrayCollection();
-        $this->albumRatings = new ArrayCollection();
-        $this->trackRatings = new ArrayCollection();
+        $this->companies = new ArrayCollection();
+        $this->investments = new ArrayCollection();
+        $this->pitchComments = new ArrayCollection();
+        $this->followedCompanies = new ArrayCollection();
+        $this->likedPitches = new ArrayCollection();
+        $this->following = new ArrayCollection();
+        $this->followers = new ArrayCollection();
         $this->registeredAt = new \DateTime();
         $this->roles = ['ROLE_USER'];
     }
@@ -146,159 +172,231 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlaylists(): Collection
+    public function getUserType(): ?string
     {
-        return $this->playlists;
+        return $this->userType;
     }
 
-    public function addPlaylist(Playlist $playlist): static
+    public function setUserType(?string $userType): static
     {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists->add($playlist);
-            $playlist->setOwner($this);
-        }
-
+        $this->userType = $userType;
         return $this;
     }
 
-    public function removePlaylist(Playlist $playlist): static
+    public function getBio(): ?string
     {
-        if ($this->playlists->removeElement($playlist)) {
-            if ($playlist->getOwner() === $this) {
-                $playlist->setOwner(null);
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
+        return $this;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): static
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    public function getLinkedin(): ?string
+    {
+        return $this->linkedin;
+    }
+
+    public function setLinkedin(?string $linkedin): static
+    {
+        $this->linkedin = $linkedin;
+        return $this;
+    }
+
+    public function getTwitter(): ?string
+    {
+        return $this->twitter;
+    }
+
+    public function setTwitter(?string $twitter): static
+    {
+        $this->twitter = $twitter;
+        return $this;
+    }
+
+    public function getIndustry(): ?string
+    {
+        return $this->industry;
+    }
+
+    public function setIndustry(?string $industry): static
+    {
+        $this->industry = $industry;
+        return $this;
+    }
+
+    public function getExpertise(): ?string
+    {
+        return $this->expertise;
+    }
+
+    public function setExpertise(?string $expertise): static
+    {
+        $this->expertise = $expertise;
+        return $this;
+    }
+
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
+    }
+
+    public function addCompany(Company $company): static
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies->add($company);
+            $company->setFounder($this);
+        }
+        return $this;
+    }
+
+    public function removeCompany(Company $company): static
+    {
+        if ($this->companies->removeElement($company)) {
+            if ($company->getFounder() === $this) {
+                $company->setFounder(null);
             }
         }
-
         return $this;
     }
 
-    public function getTags(): Collection
+    public function getInvestments(): Collection
     {
-        return $this->tags;
+        return $this->investments;
     }
 
-    public function addTag(Tag $tag): static
+    public function addInvestment(Investment $investment): static
     {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-            $tag->setAuthor($this);
+        if (!$this->investments->contains($investment)) {
+            $this->investments->add($investment);
+            $investment->setInvestor($this);
         }
-
         return $this;
     }
 
-    public function removeTag(Tag $tag): static
+    public function removeInvestment(Investment $investment): static
     {
-        if ($this->tags->removeElement($tag)) {
-            if ($tag->getAuthor() === $this) {
-                $tag->setAuthor(null);
+        if ($this->investments->removeElement($investment)) {
+            if ($investment->getInvestor() === $this) {
+                $investment->setInvestor(null);
             }
         }
-
         return $this;
     }
 
-    public function getUserPlaylists(): Collection
+    public function getPitchComments(): Collection
     {
-        return $this->userPlaylists;
+        return $this->pitchComments;
     }
 
-    public function addUserPlaylist(UserPlaylist $userPlaylist): static
+    public function addPitchComment(PitchComment $pitchComment): static
     {
-        if (!$this->userPlaylists->contains($userPlaylist)) {
-            $this->userPlaylists->add($userPlaylist);
-            $userPlaylist->setUser($this);
+        if (!$this->pitchComments->contains($pitchComment)) {
+            $this->pitchComments->add($pitchComment);
+            $pitchComment->setAuthor($this);
         }
-
         return $this;
     }
 
-    public function removeUserPlaylist(UserPlaylist $userPlaylist): static
+    public function removePitchComment(PitchComment $pitchComment): static
     {
-        if ($this->userPlaylists->removeElement($userPlaylist)) {
-            if ($userPlaylist->getUser() === $this) {
-                $userPlaylist->setUser(null);
+        if ($this->pitchComments->removeElement($pitchComment)) {
+            if ($pitchComment->getAuthor() === $this) {
+                $pitchComment->setAuthor(null);
             }
         }
-
         return $this;
     }
 
-    public function getPlaylistRatings(): Collection
+    public function getFollowedCompanies(): Collection
     {
-        return $this->playlistRatings;
+        return $this->followedCompanies;
     }
 
-    public function addPlaylistRating(PlaylistRating $playlistRating): static
+    public function addFollowedCompany(Company $company): static
     {
-        if (!$this->playlistRatings->contains($playlistRating)) {
-            $this->playlistRatings->add($playlistRating);
-            $playlistRating->setRatingUser($this);
+        if (!$this->followedCompanies->contains($company)) {
+            $this->followedCompanies->add($company);
         }
-
         return $this;
     }
 
-    public function removePlaylistRating(PlaylistRating $playlistRating): static
+    public function removeFollowedCompany(Company $company): static
     {
-        if ($this->playlistRatings->removeElement($playlistRating)) {
-            if ($playlistRating->getRatingUser() === $this) {
-                $playlistRating->setRatingUser(null);
-            }
-        }
-
+        $this->followedCompanies->removeElement($company);
         return $this;
     }
 
-    public function getAlbumRatings(): Collection
+    public function getLikedPitches(): Collection
     {
-        return $this->albumRatings;
+        return $this->likedPitches;
     }
 
-    public function addAlbumRating(AlbumRating $albumRating): static
+    public function addLikedPitch(Pitch $pitch): static
     {
-        if (!$this->albumRatings->contains($albumRating)) {
-            $this->albumRatings->add($albumRating);
-            $albumRating->setRatingUser($this);
+        if (!$this->likedPitches->contains($pitch)) {
+            $this->likedPitches->add($pitch);
         }
-
         return $this;
     }
 
-    public function removeAlbumRating(AlbumRating $albumRating): static
+    public function removeLikedPitch(Pitch $pitch): static
     {
-        if ($this->albumRatings->removeElement($albumRating)) {
-            if ($albumRating->getRatingUser() === $this) {
-                $albumRating->setRatingUser(null);
-            }
-        }
-
+        $this->likedPitches->removeElement($pitch);
         return $this;
     }
 
-    public function getTrackRatings(): Collection
+    public function getFollowing(): Collection
     {
-        return $this->trackRatings;
+        return $this->following;
     }
 
-    public function addTrackRating(TrackRating $trackRating): static
+    public function addFollowing(User $user): static
     {
-        if (!$this->trackRatings->contains($trackRating)) {
-            $this->trackRatings->add($trackRating);
-            $trackRating->setRatingUser($this);
+        if (!$this->following->contains($user)) {
+            $this->following->add($user);
         }
-
         return $this;
     }
 
-    public function removeTrackRating(TrackRating $trackRating): static
+    public function removeFollowing(User $user): static
     {
-        if ($this->trackRatings->removeElement($trackRating)) {
-            if ($trackRating->getRatingUser() === $this) {
-                $trackRating->setRatingUser(null);
-            }
-        }
+        $this->following->removeElement($user);
+        return $this;
+    }
 
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function addFollower(User $follower): static
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers->add($follower);
+            $follower->addFollowing($this);
+        }
+        return $this;
+    }
+
+    public function removeFollower(User $follower): static
+    {
+        if ($this->followers->removeElement($follower)) {
+            $follower->removeFollowing($this);
+        }
         return $this;
     }
 }

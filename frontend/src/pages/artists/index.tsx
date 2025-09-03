@@ -11,6 +11,7 @@ export const ArtistsPage = () => {
     artistStore.$error,
   ]);
 
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
 
@@ -71,7 +72,7 @@ export const ArtistsPage = () => {
       )}
 
       {artists.length === 0 && !loading && (
-        <div className="text-center text-gray-500 py-8">
+        <div className="text-center text-muted-foreground py-8">
           No artists found. Create your first artist!
         </div>
       )}
